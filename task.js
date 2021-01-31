@@ -1,22 +1,53 @@
-const snakeLikeNumbers = () => {
-  const x = 20;
-  const y = 15;
-  const arrayLenght = x * y;
+function createSpiralMatrix(row, col) {
+  const arr = [];
 
-  const arr = Array.from(Array(arrayLenght).keys());
-  const br = arr.reduce((prev, item, index) => {
-    if (index % x === 0) {
-      if (prev.length % 2 === 0 && prev.length !== 0) {
-        prev[prev.length - 1].reverse();
-      }
-      prev[prev.length] = [item];
-    } else {
-      prev[prev.length - 1].push(item);
+  for (let i = 0; i < col; i++) {
+    arr[i] = [];
+    for (let j = 0; j < row; j++) {
+      arr[i][j] = 0;
     }
-    return prev;
-  }, []);
+  }
 
-  const ad = br.map((item) => item.join("|")).join("\n");
-  console.log(ad);
-};
-snakeLikeNumbers();
+  function fillMatrix(c, r, number, direction) {
+    if (arr[c][r] != 0) return;
+
+    arr[c][r] = number;
+
+    switch (direction) {
+      case "right":
+        if (r + 1 != row && arr[c][r + 1] == 0) {
+          return fillMatrix(c, r + 1, number + 1, direction);
+        } else {
+          direction = "down";
+          return fillMatrix(c + 1, r, number + 1, direction);
+        }
+      case "down":
+        if (c + 1 != col && arr[c + 1][r] == 0) {
+          return fillMatrix(c + 1, r, number + 1, direction);
+        } else {
+          direction = "left";
+          return fillMatrix(c, r - 1, number + 1, direction);
+        }
+      case "left":
+        if (r - 1 >= 0 && arr[c][r - 1] == 0) {
+          return fillMatrix(c, r - 1, number + 1, direction);
+        } else {
+          direction = "up";
+          return fillMatrix(c - 1, r, number + 1, direction);
+        }
+      case "up":
+        if (c - 1 >= 0 && arr[c - 1][r] == 0) {
+          return fillMatrix(c - 1, r, number + 1, direction);
+        } else {
+          direction = "right";
+          return fillMatrix(c, r + 1, number + 1, direction);
+        }
+    }
+  }
+
+  fillMatrix(0, 0, 1, "right");
+
+  return arr;
+}
+
+console.log(createSpiralMatrix(3, 6));
