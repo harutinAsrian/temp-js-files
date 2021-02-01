@@ -1,0 +1,58 @@
+function fooBarSequence() {
+  for (let i = 1; i <= 250; i++) {
+    if (i % 3 === 0 && i % 7 === 0) {
+      console.log("foobar");
+      continue;
+    }
+    if (i % 3 === 0) {
+      console.log("foo");
+      continue;
+    }
+    if (i % 7 === 0) {
+      console.log("bar");
+      continue;
+    }
+    console.log(i);
+  }
+}
+
+// fooBarSequence();
+
+/////////////////////////////////////////
+
+function fooBarConfigurable(config) {
+  for (let i = 1; i < 250; i++) {
+    let skip = 0;
+    config.forEach((item) => {
+      if (item[1](i)) {
+        skip = i;
+        console.log(item[0]);
+      }
+    });
+    if (i === skip) {
+      continue;
+    } else {
+      console.log(i);
+    }
+  }
+}
+
+const fooBarConfig = [
+  ["foo", (i) => i % 3 === 0],
+  ["bar", (i) => i % 7 === 0],
+  ["fooBar", (i) => i % 21 === 0],
+];
+
+const gregorianConfig = [
+  ["leap", (i) => i % 400 === 0 || (i % 4 === 0 && i % 100 !== 0)],
+];
+
+const abraCadabraConfig = [
+  ["abra", (i) => i.toString() === i.toString().split("").reverse().join("")],
+  [
+    "cadabra",
+    (i) => i.toString() !== i.toString().split("").reverse().join(""),
+  ],
+];
+
+// fooBarConfigurable(fooBarConfig);
